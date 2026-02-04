@@ -40,6 +40,12 @@ gcc shell.c -o shell
 ```sh
 ./shell
 ```
+---
+
+## Notes
+
+This project is intentionally minimal and educational.
+It is not intended to replace a full-featured shell.
 
 ---
 
