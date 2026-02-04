@@ -26,6 +26,7 @@ void pdi() {
         printf("Free RAM: %lu MB\n", mem_info.freeram / 1024 / 1024);
         printf("Uptime: %ld seconds\n", mem_info.uptime);
     }
+	
     long num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
     printf("CPU Cores: %ld\n\n", num_cpus);
 }
@@ -33,9 +34,12 @@ void pdi() {
 
 
 int main(void){
+	
 	fputs("\033[H\033[2J", stdout);
+	
 	char res[BUFF];	
 
+	
 	puts("HELLO in \"BeboShell\" \n\ntype help for mare info\n");
 
 	fputs("\n\033[1;96m╔════════════════════════════════════════════════════════════╗\n", stdout);
@@ -47,6 +51,7 @@ int main(void){
 	fputs("\033[1;96m║  \033[1;35m╚═════╝  ╚══════╝ ╚═════╝  ╚═════╝     ╚══════╝╚═╝  ╚═╝   \033[1;96m║\n", stdout);
 	fputs("\033[1;96m╚════════════════════════════════════════════════════════════╝\033[0m\n\n", stdout);
 
+	
 	while(67) //you can make it 1 but i want it to be 67 idk why :)
 	{
 		char *dirN = "~";
@@ -65,9 +70,8 @@ int main(void){
 		res[strcspn(res, "\n")] = 0;
 
 
-
-
-
+		//logic
+		
 		if (strncmp(res, "echo ", 5) == 0 || strcmp(res, "echo") == 0)
 		{
 			int i = 5;
