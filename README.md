@@ -46,6 +46,3 @@ gcc shell.c -o shell
 ## License
 
 This projects is under MIT license
-
-```sh
-gcc src/main.c -o bebo
