@@ -30,6 +30,17 @@ expanding toward real shell behavior while remaining simple and readable.
 
 Requires a Unix-like system (Linux recommended) and GCC.
 
+```sh
+gcc shell.c -o shell
+```
+---
+
+## Run
+
+```sh
+./shell
+```
+
 ---
 
 ## License
