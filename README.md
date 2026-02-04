@@ -1,2 +1,5 @@
 # Simple-Shell
-A simple shell.
+===
+
+## a simple shell made from scratch using C
+
