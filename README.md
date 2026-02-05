@@ -20,6 +20,7 @@ expanding toward real shell behavior while remaining simple and readable.
   - `clear` / `wipe`
   - `fetch` (system information)
   - `logo`
+  - `cat`
 - Directory navigation and environment variable usage
 - System information via `uname`, `sysinfo`, and `sysconf`
 - Custom ASCII art branding
