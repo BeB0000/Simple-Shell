@@ -149,9 +149,9 @@ int main(void) {
             puts("  logo                 - show the \"logo\"");
             puts("  fetch                - Show the \"fetch device iinfo\"");
 	    	puts("  cat [fileName]       - Print file content into the screen");
-			puts("  rm [(dir/file)Name]  - Print file content into the screen");
-			puts("  mkdir [folderName]   - Print file content into the screen");
-			puts("  touch [fileName]     - Print file content into the screen");
+			puts("  rm [(dir/file)Name]  - Removes file/dir");
+			puts("  mkdir [folderName]   - To make a Dir");
+			puts("  touch [fileName]     - Makes a file");
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
