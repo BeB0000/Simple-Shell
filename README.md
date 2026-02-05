@@ -21,6 +21,9 @@ expanding toward real shell behavior while remaining simple and readable.
   - `fetch` (system information)
   - `logo`
   - `cat`
+  - `mkdir`
+  - `touch`
+  - `rm`
 - Directory navigation and environment variable usage
 - System information via `uname`, `sysinfo`, and `sysconf`
 - Custom ASCII art branding
@@ -32,7 +35,7 @@ expanding toward real shell behavior while remaining simple and readable.
 Requires a Unix-like system (Linux recommended) and GCC.
 
 ```sh
-gcc shell.c -o shell
+gcc shell.c -o shell -lreadline 
 ```
 ---
 
