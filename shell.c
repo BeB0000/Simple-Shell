@@ -92,14 +92,15 @@ int main(void) {
 
         else if (strcmp(argv[0], "help") == 0) {
             puts("BeboShell Commands:");
-            puts("  echo [text]  - Print text to screen");
-            puts("  whoami       - Display current user");
-            puts("  ls/peek      - List files in current directory");
-            puts("  pwd/path     - Print working directory");
-            puts("  clear/wipe        - Clear the screen");
-            puts("  exit/quit    - Exit BeboShell");
-            puts("  logo         - show the \"logo\"");
-            puts("  fetch        - Show the \"fetch device iinfo\"");
+            puts("  echo [text]    - Print text to screen");
+            puts("  whoami         - Display current user");
+            puts("  ls/peek        - List files in current directory");
+            puts("  pwd/path       - Print working directory");
+            puts("  clear/wipe     - Clear the screen");
+            puts("  exit/quit      - Exit BeboShell");
+            puts("  logo           - show the \"logo\"");
+            puts("  fetch          - Show the \"fetch device iinfo\"");
+	    puts("  cat [fileNam]  - Print file content into the screen");
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
@@ -119,9 +120,38 @@ int main(void) {
             putchar('\n');
         }
 
-        else if (strcmp(argv[0], "clear") == 0 || strcmp(argv[0], "wipe") == 0) {
-            fputs("\033[H\033[2J", stdout);
-        }
+	else if (strcmp(argv[0], "clear") == 0 || strcmp(argv[0], "wipe") == 0) {
+    		fputs("\033[H\033[2J\033[3J", stdout);
+    		fflush(stdout);
+	}
+
+	else if (strcmp(res, "cat") == 0 || strncmp(res, "cat ", 4) == 0) {
+		char buffer[BUFF];
+    		int i = 4;
+		int j = 0;
+		char arg[BUFF];
+
+		while (res[i] != '\0')
+		{
+			arg[j] = res[i];
+   			i++;
+			j++;
+		}
+
+		FILE *file = fopen(arg, "r");
+    
+    		if (file == NULL) {
+        		printf("cat: %s: No such file or directory\n", res);
+    		} else {
+        		size_t bytes;
+        
+        		while ((bytes = fread(buffer, 1, sizeof(buffer), file)) > 0) {
+            			fwrite(buffer, 1, bytes, stdout);
+        		}
+        
+        		fclose(file);
+    		}
+	}
 
         else if (strcmp(argv[0], "ls") == 0 || strcmp(argv[0], "peek") == 0) {
             DIR *d = opendir(".");
