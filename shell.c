@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -106,17 +108,50 @@ int main(void) {
         
         if (strcmp(argv[0], "exit") == 0 || strcmp(argv[0], "quit") == 0) break;
 
+	else if (strcmp(argv[0], "42") == 0) {
+    		puts("you found the easter egg!!");
+	}
+
+	else if (strcmp(argv[0], "rm") == 0) {
+    		if (argc < 2) {
+        		puts("rm: missing operand");
+    		} else if (remove(argv[1]) != 0) {
+        		perror("rm");
+    		}
+	}
+
+	else if (strcmp(argv[0], "touch") == 0) {
+    		if (argc < 2) {
+        		puts("touch: missing file operand");
+    		} else {
+        		FILE *f = fopen(argv[1], "a");
+        		if (f) fclose(f);
+        		else perror("touch");
+    		}
+	}
+
+	else if (strcmp(argv[0], "mkdir") == 0) {
+		if (argc < 2) {
+        		puts("mkdir: missing operand");
+		} else if (mkdir(argv[1], 0755) != 0) {
+        		perror("mkdir");
+	    	}
+	}
+
         else if (strcmp(argv[0], "help") == 0) {
             puts("BeboShell Commands:");
-            puts("  echo [text]     - Print text to screen");
-            puts("  whoami          - Display current user");
-            puts("  ls/peek         - List files in current directory");
-            puts("  pwd/path        - Print working directory");
-            puts("  clear/wipe      - Clear the screen");
-            puts("  exit/quit       - Exit BeboShell");
-            puts("  logo            - show the \"logo\"");
-            puts("  fetch           - Show the \"fetch device iinfo\"");
-	    puts("  cat [fileName]  - Print file content into the screen");
+            puts("  echo [text]          - Print text to screen");
+            puts("  whoami               - Display current user");
+            puts("  ls/peek              - List files in current directory");
+            puts("  pwd/path             - Print working directory");
+            puts("  clear/wipe           - Clear the screen");
+            puts("  exit/quit            - Exit BeboShell");
+            puts("  logo                 - show the \"logo\"");
+            puts("  fetch                - Show the \"fetch device iinfo\"");
+	    	puts("  cat [fileName]       - Print file content into the screen");
+			puts("  rm [(dir/file)Name]  - Print file content into the screen");
+			puts("  mkdir [folderName]   - Print file content into the screen");
+			puts("  touch [fileName]     - Print file content into the screen");
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
@@ -141,32 +176,24 @@ int main(void) {
     		fflush(stdout);
 	}
 
-	else if (strcmp(res, "cat") == 0 || strncmp(res, "cat ", 4) == 0) {
-		char buffer[BUFF];
-    		int i = 4;
-		int j = 0;
-		char arg[BUFF];
 
-		while (res[i] != '\0')
-		{
-			arg[j] = res[i];
-   			i++;
-			j++;
-		}
-
-		FILE *file = fopen(arg, "r");
-    
-    		if (file == NULL) {
-        		printf("cat: %s: No such file or directory\n", res);
+	else if (strcmp(argv[0], "cat") == 0) {
+    		char buffer[BUFF];
+    		if (argc < 2) {
+        		puts("cat: missing file operand");
     		} else {
-        		size_t bytes;
+        		FILE *file = fopen(argv[1], "r");
         
-        		while ((bytes = fread(buffer, 1, sizeof(buffer), file)) > 0) {
-            			fwrite(buffer, 1, bytes, stdout);
+        	if (file == NULL) {
+            		printf("cat: %s: No such file or directory\n", argv[1]);
+        	} else {
+            		size_t bytes;
+            		while ((bytes = fread(buffer, 1, sizeof(buffer), file)) > 0) {
+                	fwrite(buffer, 1, bytes, stdout);
+            		}
+            		fclose(file);
         		}
-        
-        		fclose(file);
-    		}
+   	 	}
 	}
 
         else if (strcmp(argv[0], "ls") == 0 || strcmp(argv[0], "peek") == 0) {
@@ -205,9 +232,16 @@ int main(void) {
             fputs("\033[1;96m╚════════════════════════════════════════════════════════════╝\033[0m\n\n", stdout);
         }
         
-        else {
-            printf("BeboShell: Unknown command: %s\n\n", res);
-        }
+	else {
+    		pid_t pid = fork();
+    		if (pid == 0) {
+        		execvp(argv[0], argv);
+        		fprintf(stderr, "BeboShell: command not found: %s\n", argv[0]);
+        		exit(1);
+    		} else if (pid > 0) {
+        		wait(NULL);
+    		}
+	}
     
 	if (*res) add_history(res);
 	free(res);
