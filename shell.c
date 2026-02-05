@@ -6,9 +6,18 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/wait.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #define BUFF 1024
 #define MAX_ARGS 32
+
+/*
+void keys(){
+	rl_bind_key('\e[A', previous_history);//upArrow
+	rl_bind_key('\e[B', next_history);//downArrow
+}
+*/
 
 //print device info
 void pdi() {
@@ -35,6 +44,7 @@ void pdi() {
     printf("CPU Cores: %ld\n\n", cpu);
 }
 
+
 int parse(char *input, char **argv) {
     int argc = 0;
     char *tok = strtok(input, " ");
@@ -45,6 +55,8 @@ int parse(char *input, char **argv) {
     argv[argc] = NULL;
     return argc;
 }
+
+
 
 int main(void) {
     fputs("\033[H\033[2J", stdout);
@@ -61,7 +73,7 @@ int main(void) {
     fputs("\033[1;96m║  \033[1;35m╚═════╝  ╚══════╝ ╚═════╝  ╚═════╝     ╚══════╝╚═╝  ╚═╝   \033[1;96m║\n", stdout);
     fputs("\033[1;96m╚════════════════════════════════════════════════════════════╝\033[0m\n\n", stdout);
 
-    while (67) //you can make it 1 but i want it to be 67 idk why :)
+    while (67) //you can make it 1 but i want it to be 67 'idk why?' :)
     {
         char cwd[BUFF];
         char *dir = "~";
@@ -71,9 +83,13 @@ int main(void) {
             if (t && *(t + 1)) dir = t + 1;
         }
 
-        printf("\033[1;36m◄ %s ◎ \033[0m", dir);
+	char prompt[BUFF];
+	snprintf(prompt, sizeof(prompt),
+	         "\033[1;36m◄ %s ◎ \033[0m", dir);
 
-        if (!fgets(res, BUFF, stdin)) break;
+	char *res = readline(prompt);
+	if (!res) break;
+
         res[strcspn(res, "\n")] = 0;
         if (!*res) continue;
 
@@ -92,15 +108,15 @@ int main(void) {
 
         else if (strcmp(argv[0], "help") == 0) {
             puts("BeboShell Commands:");
-            puts("  echo [text]    - Print text to screen");
-            puts("  whoami         - Display current user");
-            puts("  ls/peek        - List files in current directory");
-            puts("  pwd/path       - Print working directory");
-            puts("  clear/wipe     - Clear the screen");
-            puts("  exit/quit      - Exit BeboShell");
-            puts("  logo           - show the \"logo\"");
-            puts("  fetch          - Show the \"fetch device iinfo\"");
-	    puts("  cat [fileNam]  - Print file content into the screen");
+            puts("  echo [text]     - Print text to screen");
+            puts("  whoami          - Display current user");
+            puts("  ls/peek         - List files in current directory");
+            puts("  pwd/path        - Print working directory");
+            puts("  clear/wipe      - Clear the screen");
+            puts("  exit/quit       - Exit BeboShell");
+            puts("  logo            - show the \"logo\"");
+            puts("  fetch           - Show the \"fetch device iinfo\"");
+	    puts("  cat [fileName]  - Print file content into the screen");
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
@@ -190,17 +206,11 @@ int main(void) {
         }
         
         else {
-            pid_t pid = fork();
-            if (pid == 0) {
-                execvp(argv[0], argv);
-                perror("exec");
-                exit(1);
-            } else if (pid > 0) {
-                wait(NULL);
-            } else {
-                perror("fork");
-            }
+            printf("BeboShell: Unknown command: %s\n\n", res);
         }
+    
+	if (*res) add_history(res);
+	free(res);
     }
 
     puts("Quitting...");
