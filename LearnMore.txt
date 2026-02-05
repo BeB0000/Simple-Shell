@@ -1,0 +1,217 @@
+#Complete Function & Library Reference for BeboShell
+
+Libraries Explained
+#include <stdio.h> - Standard Input/Output
+
+Basic input/output operations for reading/writing data.
+
+Functions you use:
+
+    printf(format, ...) - Print formatted text to stdout
+    fprintf(stream, format, ...) - Print formatted text to a file stream
+    puts(string) - Print string + newline to stdout
+    putchar(char) - Print single character to stdout
+    fputs(string, stream) - Write string to stream (no newline)
+    fflush(stream) - Force output buffer to write immediately
+    fopen(path, mode) - Open file ("r"=read, "w"=write, "a"=append)
+    fclose(file) - Close open file
+    fread(buffer, size, count, file) - Read binary data from file
+    fwrite(buffer, size, count, file) - Write binary data to file
+    perror(message) - Print error message based on errno
+    snprintf(buffer, size, format, ...) - Safely format string into buffer
+    remove(path) - Delete a file
+
+#include <stdlib.h> - Standard Library
+
+Memory management, process control, and utility functions.
+
+Functions you use:
+
+    exit(status) - Terminate program with exit code
+    getenv(name) - Get environment variable value (like "USER", "HOME")
+    free(pointer) - Free dynamically allocated memory
+
+#include <string.h> - String Manipulation
+
+Functions for working with C strings (null-terminated char arrays).
+
+Functions you use:
+
+    strcmp(str1, str2) - Compare strings (returns 0 if equal)
+    strncmp(str1, str2, n) - Compare first n characters
+    strcpy(dest, src) - Copy string (unsafe if dest too small)
+    strncpy(dest, src, n) - Copy at most n characters
+    strlen(str) - Get string length (not including null terminator)
+    strcspn(str, reject) - Find first occurrence of any char in reject
+    strrchr(str, char) - Find LAST occurrence of character in string
+    strtok(str, delim) - Split string by delimiter (modifies original!)
+
+#include <sys/utsname.h> - System Name/Info
+
+Get information about the operating system.
+
+Structures:
+c
+
+struct utsname {
+    char sysname[];   // OS name (e.g., "Linux")
+    char nodename[];  // Network node hostname
+    char release[];   // OS release (e.g., "5.15.0")
+    char version[];   // OS version
+    char machine[];   // Hardware type (e.g., "x86_64")
+};
+
+Functions you use:
+
+    uname(struct utsname *buf) - Fill buffer with system info
+
+#include <sys/sysinfo.h> - System Statistics
+
+Get system resource information (Linux-specific).
+
+Structures:
+c
+
+struct sysinfo {
+    long uptime;        // Seconds since boot
+    unsigned long totalram;  // Total usable RAM
+    unsigned long freeram;   // Available RAM
+    unsigned int mem_unit;   // Memory unit size in bytes
+    // ... other fields
+};
+
+Functions you use:
+
+    sysinfo(struct sysinfo *info) - Fill buffer with system stats
+
+#include <unistd.h> - POSIX Operating System API
+
+Low-level Unix/Linux system calls.
+
+Functions you use:
+
+    fork() - Create child process (returns 0 in child, PID in parent)
+    chdir(path) - Change current working directory
+    getcwd(buffer, size) - Get current working directory path
+    sysconf(name) - Get system configuration info
+        _SC_NPROCESSORS_ONLN - Number of online CPU cores
+
+#include <dirent.h> - Directory Entries
+
+Reading directory contents.
+
+Structures:
+
+struct dirent {
+    char d_name[256];  // Filename
+    unsigned char d_type;  // File type
+    // ... other fields
+};
+
+Functions you use:
+
+    opendir(path) - Open directory for reading
+    readdir(DIR *dir) - Read next directory entry
+    closedir(DIR *dir) - Close directory
+
+#include <sys/wait.h> - Process Waiting
+
+Wait for child processes to complete.
+
+Functions you use:
+
+    wait(int *status) - Wait for any child process to finish
+    waitpid(pid, status, options) - Wait for specific child process
+
+#include <sys/stat.h> - File Status
+
+File and directory information/manipulation.
+
+Functions you use:
+
+    mkdir(path, mode) - Create directory
+        Mode: 0755 = rwxr-xr-x (owner can read/write/execute, others can read/execute)
+
+#include <sys/types.h> - System Data Types
+
+Defines data types used by system calls.
+
+Types you use:
+
+    pid_t - Process ID type (used with fork())
+    size_t - Unsigned integer for sizes
+    DIR - Directory stream type
+
+#include <readline/readline.h> - Command Line Editing
+
+Provides advanced line editing with history support.
+
+Functions you use:
+
+    readline(prompt) - Read line with editing features (arrow keys, backspace, etc.)
+        Returns dynamically allocated string (must free!)
+        Returns NULL on EOF (Ctrl+D)
+
+#include <readline/history.h> - Command History
+
+Manage command history for readline.
+
+Functions you use:
+
+    add_history(line) - Add command to history (for up/down arrows)
+
+Key Function Categories
+Process Control
+
+pid_t fork()           // Create new process
+int execvp(file, argv) // Replace current process with new program
+int wait(int *status)  // Wait for child to finish
+void exit(int status)  // Terminate process
+
+How they work together in your shell:
+
+    fork() - Creates copy of shell process
+    Child process calls execvp() - Replaces itself with command
+    Parent process calls wait() - Waits for child to finish
+    Child calls exit() - Terminates after command completes
+
+File Operations
+
+FILE *fopen(path, mode)      // Open file
+size_t fread(buf, size, n, f) // Read from file
+size_t fwrite(buf, size, n, f) // Write to file
+int fclose(FILE *f)          // Close file
+int remove(path)             // Delete file
+
+Directory Operations
+
+int chdir(path)           // Change directory
+char *getcwd(buf, size)   // Get current directory
+DIR *opendir(path)        // Open directory
+struct dirent *readdir(d) // Read directory entry
+int closedir(DIR *d)      // Close directory
+int mkdir(path, mode)     // Create directory
+
+String Parsing
+
+int strcmp(s1, s2)        // Compare strings (0 = equal)
+char *strtok(str, delim)  // Split string by delimiter
+char *strcpy(dest, src)   // Copy string
+size_t strlen(str)        // Get string length
+
+System Information
+
+int uname(struct utsname *buf)    // Get OS info
+int sysinfo(struct sysinfo *info) // Get system stats
+long sysconf(int name)            // Get config value
+char *getenv(const char *name)    // Get environment variable
+
+Memory Management Note
+
+Important: readline() returns dynamically allocated memory:
+
+char *res = readline(prompt);  // Allocates memory
+// ... use res ...
+free(res);  // MUST free when done!
+
+This is why you have free(res) at the end of your loop!
