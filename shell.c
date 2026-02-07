@@ -1,36 +1,18 @@
 #include <stdio.h>
-
-#include <stdlib.h>
-
+#includee <stdlib.h>
 #include <string.h>
-
 #include <sys/utsname.h>
-
 #include <sys/sysinfo.h>
-
 #include <unistd.h>
-
 #include <dirent.h>
-
 #include <sys/wait.h>
-
 #include <sys/stat.h>
-
 #include <sys/types.h>
-
 #include <readline/readline.h>
-
 #include <readline/history.h>
 
 #define BUFF 1024
 #define MAX_ARGS 32
-
-/*
-void keys(){
-	rl_bind_key('\e[A', previous_history);//upArrow
-	rl_bind_key('\e[B', next_history);//downArrow
-}
-*/
 
 //print device info
 void pdi() {
@@ -50,7 +32,7 @@ void pdi() {
     unsigned long free = s.freeram * s.mem_unit / 1024 / 1024;
     printf("Total RAM: %lu MB\n", total);
     printf("Free RAM: %lu MB\n", free);
-    printf("Uptime: %ld seconds\n", s.uptime);
+	printf("Uptime: %ld seconds\n", s.uptime);
   }
 
   long cpu = sysconf(_SC_NPROCESSORS_ONLN);
