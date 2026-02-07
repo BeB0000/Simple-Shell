@@ -107,6 +107,33 @@ int main(void) {
         
         
         if (strcmp(argv[0], "exit") == 0 || strcmp(argv[0], "quit") == 0) break;
+	
+	else if (strcmp(argv[0], "cp") == 0) {
+    		if (argc < 3) {
+        		fprintf(stderr, "Usage: %s <source_file> <destination_file>\n", argv[0]);
+    		} else {
+        		FILE *source = fopen(argv[1], "rb");
+        		if (source == NULL) {
+            			perror("Error opening source file");
+        		}
+
+        		FILE *dest = fopen(argv[2], "wb");
+        		if (dest == NULL) {
+            			perror("Error opening destination file");
+            			fclose(source);
+        		}
+
+        		char buffer[BUFF];
+        		size_t bytesRead;
+        		while ((bytesRead = fread(buffer, 1, sizeof(buffer), source)) > 0) {
+            			fwrite(buffer, 1, bytesRead, dest);
+        		}
+
+        		fclose(source);
+        		fclose(dest);
+        		printf("File copied successfully from %s to %s\n", argv[1], argv[2]);
+    		}
+	}
 
 	else if (strcmp(argv[0], "42") == 0) {
     		puts("you found the easter egg!!");
@@ -139,19 +166,20 @@ int main(void) {
 	}
 
         else if (strcmp(argv[0], "help") == 0) {
-            puts("BeboShell Commands:");
-            puts("  echo [text]          - Print text to screen");
-            puts("  whoami               - Display current user");
-            puts("  ls/peek              - List files in current directory");
-            puts("  pwd/path             - Print working directory");
-            puts("  clear/wipe           - Clear the screen");
-            puts("  exit/quit            - Exit BeboShell");
-            puts("  logo                 - show the \"logo\"");
-            puts("  fetch                - Show the \"fetch device iinfo\"");
-	    	puts("  cat [fileName]       - Print file content into the screen");
-			puts("  rm [(dir/file)Name]  - Removes file/dir");
-			puts("  mkdir [folderName]   - To make a Dir");
-			puts("  touch [fileName]     - Makes a file");
+        	puts("BeboShell Commands:");
+        	puts(" echo [text]          - Print text to screen");
+        	puts(" whoami               - Display current user");
+        	puts(" ls/peek              - List files in current directory");
+        	puts(" pwd/path             - Print working directory");
+        	puts(" clear/wipe           - Clear the screen");
+        	puts(" exit/quit            - Exit BeboShell");
+        	puts(" logo                 - show the \"logo\"");
+        	puts(" fetch                - Show the \"fetch device iinfo\"");
+		puts(" cat [fileName]       - Print file content into the screen");
+		puts(" rm [(dir/file)Name]  - Print file content into the screen");
+		puts(" mkdir [folderName]   - Print file content into the screen");
+		puts(" touch [fileName]     - Print file content into the screen");
+		puts(" cp [src] [desten]    - Copy [src] to [dest]")
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
