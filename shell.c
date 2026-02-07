@@ -14,13 +14,6 @@
 #define BUFF 1024
 #define MAX_ARGS 32
 
-/*
-void keys(){
-	rl_bind_key('\e[A', previous_history);//upArrow
-	rl_bind_key('\e[B', next_history);//downArrow
-}
-*/
-
 //print device info
 void pdi() {
     struct utsname u;
@@ -106,7 +99,7 @@ int main(void) {
         //logic
         
         
-        if (strcmp(argv[0], "exit") == 0 || strcmp(argv[0], "quit") == 0) break;
+	if (strcmp(argv[0], "exit") == 0 || strcmp(argv[0], "quit") == 0) break;
 	
 	else if (strcmp(argv[0], "cp") == 0) {
     		if (argc < 3) {
@@ -175,11 +168,11 @@ int main(void) {
         	puts(" exit/quit            - Exit BeboShell");
         	puts(" logo                 - show the \"logo\"");
         	puts(" fetch                - Show the \"fetch device iinfo\"");
-		puts(" cat [fileName]       - Print file content into the screen");
-		puts(" rm [(dir/file)Name]  - Print file content into the screen");
-		puts(" mkdir [folderName]   - Print file content into the screen");
-		puts(" touch [fileName]     - Print file content into the screen");
-		puts(" cp [src] [desten]    - Copy [src] to [dest]")
+			puts(" cat [fileName]       - Print file content into the screen");
+			puts(" rm [(dir/file)Name]  - Print file content into the screen");
+			puts(" mkdir [folderName]   - Print file content into the screen");
+			puts(" touch [fileName]     - Print file content into the screen");
+			puts(" cp [src] [dest]    - Copy [src] to [dest]")
         }
 
         else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
