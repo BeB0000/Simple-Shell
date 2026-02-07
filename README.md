@@ -24,6 +24,7 @@ expanding toward real shell behavior while remaining simple and readable.
   - `mkdir`
   - `touch`
   - `rm`
+  - `cp`
 - Directory navigation and environment variable usage
 - System information via `uname`, `sysinfo`, and `sysconf`
 - Custom ASCII art branding
