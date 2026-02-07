@@ -156,7 +156,7 @@ int main(void) {
       puts(" rm [(dir/file)Name]  - Print file content into the screen");
       puts(" mkdir [folderName]   - Print file content into the screen");
       puts(" touch [fileName]     - Print file content into the screen");
-      puts(" cp [src] [desten]    - Copy [src] to [dest]")
+      puts(" cp [src] [desten]    - Copy [src] to [dest]");
     } else if (strcmp(argv[0], "pwd") == 0 || strcmp(argv[0], "path") == 0) {
       if (getcwd(cwd, sizeof(cwd))) puts(cwd);
     } else if (strcmp(argv[0], "whoami") == 0) {
