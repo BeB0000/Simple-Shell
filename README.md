@@ -38,12 +38,26 @@ Requires a Unix-like system (Linux recommended) and GCC.
 ```sh
 gcc shell.c -o shell -lreadline 
 ```
+### or
+
+You can make it with Makefile to run "shell" without './' like "./shell"
+
+```sh
+sudo Makefile install
+```
 ---
 
 ## Run
 
 ```sh
 ./shell
+```
+### or
+
+if you ran "sudo Makefile install"
+
+```sh
+shell
 ```
 ---
 
