@@ -49,6 +49,8 @@ sudo Makefile install
 
 ## Run
 
+if you ran "gcc shell.c -o shell"
+
 ```sh
 ./shell
 ```
